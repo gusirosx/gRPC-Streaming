@@ -18,6 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TimeServiceClient interface {
+	// Stream the TimeResponse
 	StreamTime(ctx context.Context, in *Request, opts ...grpc.CallOption) (TimeService_StreamTimeClient, error)
 }
 
@@ -65,6 +66,7 @@ func (x *timeServiceStreamTimeClient) Recv() (*TimeResponse, error) {
 // All implementations must embed UnimplementedTimeServiceServer
 // for forward compatibility
 type TimeServiceServer interface {
+	// Stream the TimeResponse
 	StreamTime(*Request, TimeService_StreamTimeServer) error
 	mustEmbedUnimplementedTimeServiceServer()
 }

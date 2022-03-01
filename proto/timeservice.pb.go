@@ -21,6 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// The request message containing the duration_secs
 type Request struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -68,6 +69,7 @@ func (x *Request) GetDurationSecs() uint32 {
 	return 0
 }
 
+// The response message containing the current_time
 type TimeResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

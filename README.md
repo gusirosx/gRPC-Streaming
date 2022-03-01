@@ -27,15 +27,15 @@ or
 
 3. Observe the output, it should be receiving and printing a message every second as the server sends them.
 
-    ```sh
+```sh
     gRPC established to timeserver, starting to stream
-    received message: current_timestamp: 2022-03-01T20:52:17Z
-    received message: current_timestamp: 2022-03-01T20:52:18Z
-    received message: current_timestamp: 2022-03-01T20:52:19Z
-    received message: current_timestamp: 2022-03-01T20:52:20Z
-    received message: current_timestamp: 2022-03-01T20:52:21Z
+    Current TimeStamp: 2022-03-01T21:23:47Z
+    Current TimeStamp: 2022-03-01T21:23:48Z
+    Current TimeStamp: 2022-03-01T21:23:49Z
+    Current TimeStamp: 2022-03-01T21:23:50Z
+    Current TimeStamp: 2022-03-01T21:23:51Z
     end of stream
-    ```
+```
 ## How to create proto files
 
 1. use the makefile

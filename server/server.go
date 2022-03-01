@@ -5,41 +5,27 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"os"
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "gRPC-Streaming/proto"
 )
 
-const responseInterval = time.Second
+const (
+	port             = ":50050"
+	responseInterval = time.Second
+)
 
-func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "50050"
-	}
-
-	log.Printf("timeserver: starting on port %s", port)
-	listener, err := net.Listen("tcp", ":"+port)
-	if err != nil {
-		log.Fatalf("net.Listen: %v", err)
-	}
-
-	svc := new(timeService)
-	server := grpc.NewServer()
-	pb.RegisterTimeServiceServer(server, svc)
-	if err = server.Serve(listener); err != nil {
-		log.Fatal(err)
-	}
-}
-
+// server is used to implement TimeServiceServer.
 type timeService struct {
+	// Embed the unimplemented server
 	pb.UnimplementedTimeServiceServer
 }
 
+// StreamTime implements TimeServiceServer
 func (timeService) StreamTime(req *pb.Request, resp pb.TimeService_StreamTimeServer) error {
 	durationSeconds := req.GetDurationSecs()
 	finish := time.Now().Add(time.Second * time.Duration(durationSeconds))
@@ -57,4 +43,19 @@ func (timeService) StreamTime(req *pb.Request, resp pb.TimeService_StreamTimeSer
 		}
 	}
 	return nil
+}
+
+func main() {
+	lis, err := net.Listen("tcp", port)
+	if err != nil {
+		log.Fatalf("failed to listen on port %s: %v", port, err)
+	}
+	log.Printf("timeserver: starting at %v", lis.Addr())
+	srv := grpc.NewServer()
+	pb.RegisterTimeServiceServer(srv, &timeService{})
+	// Register reflection service on gRPC server.
+	reflection.Register(srv)
+	if err := srv.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
 }

@@ -6,14 +6,18 @@ package proto;
 
 import "google/protobuf/timestamp.proto";
 
+// The TimeService service definition.
 service TimeService {
+  // Stream the TimeResponse
   rpc StreamTime(Request) returns (stream TimeResponse) {}
 }
 
+// The request message containing the duration_secs
 message Request {
   uint32 duration_secs = 2;
 }
 
+// The response message containing the current_time
 message TimeResponse {
   google.protobuf.Timestamp current_time = 1;
 }
