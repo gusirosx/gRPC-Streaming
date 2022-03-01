@@ -1,6 +1,6 @@
-// Sample grpc server with a streaming response.
 package main
 
+// Sample grpc server with a streaming response.
 import (
 	"fmt"
 	"log"
@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/golang/protobuf/ptypes"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "gRPC-Streaming/proto"
 )
@@ -19,7 +19,7 @@ const responseInterval = time.Second
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "50050"
 	}
 
 	log.Printf("timeserver: starting on port %s", port)
@@ -46,16 +46,14 @@ func (timeService) StreamTime(req *pb.Request, resp pb.TimeService_StreamTimeSer
 
 	for time.Now().Before(finish) {
 		if err := resp.Send(&pb.TimeResponse{
-			CurrentTime: ptypes.TimestampNow()}); err != nil {
+			CurrentTime: timestamppb.Now()}); err != nil {
 			return fmt.Errorf("failed to send message: %w", err)
 		}
-
 		select {
 		case <-time.After(responseInterval):
 		case <-resp.Context().Done():
 			log.Printf("response context closed, exiting response")
 			return resp.Context().Err()
-
 		}
 	}
 	return nil

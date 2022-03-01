@@ -9,8 +9,6 @@ import (
 	"time"
 
 	pb "gRPC-Streaming/proto"
-
-	"github.com/golang/protobuf/ptypes"
 )
 
 func main() {
@@ -46,11 +44,10 @@ func streamTime(client pb.TimeServiceClient, duration uint) error {
 		} else if err != nil {
 			return fmt.Errorf("error receiving message: %w", err)
 		}
-
-		ts, err := ptypes.Timestamp(msg.GetCurrentTime())
-		if err != nil {
-			return fmt.Errorf("failed to parse timestamp %v: %w", msg.GetCurrentTime(), err)
+		ts := msg.GetCurrentTime()
+		if err := ts.CheckValid(); err != nil {
+			log.Println(err.Error())
 		}
-		log.Printf("received message: current_timestamp: %v", ts.Format(time.RFC3339))
+		log.Printf("received message: current_timestamp: %v", ts.AsTime().Format(time.RFC3339))
 	}
 }
