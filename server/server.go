@@ -27,6 +27,7 @@ type timeService struct {
 
 // StreamTime implements TimeServiceServer
 func (timeService) StreamTime(req *pb.Request, resp pb.TimeService_StreamTimeServer) error {
+	log.Println("Streaming request received")
 	durationSeconds := req.GetDurationSecs()
 	finish := time.Now().Add(time.Second * time.Duration(durationSeconds))
 
