@@ -34,7 +34,7 @@ func streamTime(client pb.TimeServiceClient, duration uint) error {
 	if err != nil {
 		return fmt.Errorf("StreamTime rpc failed: %w", err)
 	}
-	log.Print("rpc established to timeserver, starting to stream")
+	log.Print("gRPC established to timeserver, starting to stream")
 
 	for {
 		msg, err := resp.Recv()
