@@ -19,7 +19,7 @@ const (
 	responseInterval = time.Second
 )
 
-// server is used to implement TimeServiceServer.
+// timeService is used to implement TimeServiceServer.
 type timeService struct {
 	// Embed the unimplemented server
 	pb.UnimplementedTimeServiceServer

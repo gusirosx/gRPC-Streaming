@@ -6,7 +6,7 @@ package proto;
 
 import "google/protobuf/timestamp.proto";
 
-// The TimeService service definition.
+// TimeService service definition.
 service TimeService {
   // Stream the TimeResponse
   rpc StreamTime(Request) returns (stream TimeResponse) {}
